@@ -151,9 +151,69 @@ and can be found in the javadoc subdirectory. The pages are in HTML
 format and can be viewed by opening index.html in the javadoc
 directory with a web browser. 
 
-\subsection{Specific Design Decisions}
 
-\section{Description of Program Structure}
+
+\section{General Program Structure}
+The design of our rumour routing implementation from `OU3' assignment
+proofed to be mostly feasible for implementation. Certainly, some
+details that were left open in the design slightly changed other
+structures in the design, but mostly the presented code can be seen as
+an implementation of `OU3'. Hence below follows just a rather short
+account for the general design and we will focus more on practical
+implementation details. 
+
+A general aim of object oriented design is to develop a model where
+real world entities have their counterparts modelled as clases/objects
+with similar properties, behaviour and relations. For the current
+implementation, the real world entities of interest are the sensor
+\textit{nodes} with the capability to detect events and send/receive
+information. These three activities define two other abstract real
+world entities: \textit{events} and \textit{messages} that can be sent
+and received. Finally, as we are interested to investigate specific
+situations involving a large number of the above mentioned entities,
+we also consider the \textit{environment} as a required entity in our
+implementation. Hence, \textit{environment}, \textit{node},
+\textit{event} and \textit{message} were chosen as the base
+classes. To modell the behaviour described as \textit{rumour routing} algorithm,
+we designed specialications of the class \textit{message}:
+\textit{agent} and \textit{query}. 
+
+\section{Specific Design Decisions}
+\subsection{A generic Environment}
+To obtain a generic environment that allows positioning nodes in which
+ever way desired, a coordinate based system was implemeted. Then, to
+simplify the main loop, a data structure containing the
+neighbour nodes in send/receive range is generated prior to the actual
+experiment. During the experiment, no more distances need to be
+calculated, only the initialized node neighbour data structure can be accessed.
+
+\subsection{Time managment}
+Time in our system is semi continuous and more like a turn/step based
+game system. In each time step, each node has at least once focus to
+do one activity. The activities that consume such a time slot at the
+node are sending and receiving a message while detecting an event and
+creating messages does not consume the time step.
+
+\subsubsection{Busy States}
+The steps that consume a time slot at the node, sending/receiving
+always involve two nodes. Hence, two scenarios related to concurrency
+have to be handled: (1) A node wants to send a message and the 
+receiver node has already used it's turn, (2) when the sequence comes
+to a node, he has already used his turn by receiving a message earlier
+in the same time step.
+
+We defined a boolean \textit{busy state} property on the node class
+which is switched to \textit{true} after having used the current time
+step. After looping through all nodes in one time step for activities,
+a further loop for switching the \textit{busy state} back to
+\textit{false}.
+
+\subsection{Events - copy or clone?}
+\subsection{Managing the Routing Tables}
+\subsection{Where to go - nextNode mode}
+
+
+
 
 Figure \ref{fig:uml} shows the UML diagram of the chosen design,
 automatically produced using IntelliJ.
