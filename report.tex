@@ -262,7 +262,8 @@ which allows also to check the last element added.
 The \textit{nextNode} methods of \textit{query} for \textit{track} and
 \textit{homing} method were straightforward. The former matches his
 query event with the event in the routing table and read out the
-nodeId. While the latter pops nodes from the 
+nodeId. While the latter pops nodes from the route stack which holds
+references to the nodes travelled. 
 
 
 Figure \ref{fig:uml} shows the UML diagram of the chosen design,
@@ -278,6 +279,37 @@ automatically produced using IntelliJ.
 
 
 \section{Limitations and Future Development}
+\subsection{General Datastrcuture}
+Current limitations are mostly two-fold: First the current
+implementation has a rather bad time complexity due to several nested
+for loops. This is a result of the chosen data structures and grouping
+of information. For example is currently the routing table a \textit{HashMap}
+with a relation between an \textit{Event} object and a \textit{nodeId}
+(Integer). The nodeId represents the direction to follow for finding
+the event node in question. However, as event objects that, according
+to the \textit{equalTo} method are idenical, can contain different information
+(distance to event node). Hence sometimes, also HashMap keys need to
+be looked up which is not a normal operation in the interface of a
+Hash Map. This is the main cause for the nested \textit{for loops}. In a
+improved version, event obejcts should also include the \textit{nodeId} of the
+path to the event node as this information anyway is associated to the
+distance already found as property in the \textit{Event}. 
+
+\subsection{Validation of Result}
+Currently, the only validation that the implementation works correct
+has been done by elaborate debugging sessions. A help here was the
+very generic implementation which allowed to quickly modifying the
+experimental parameters. The currently available test cases asses the
+validity of individual functions and some smaller structures. In a
+future versions more general test cases should be added that
+unambiguously track and validate the whole lifecycles of individual
+objects, from instantiation to desctruction. 
+Also a number of more higher-lever situations need to be tested: What
+happens to a message when all neighbour nodes of the current node have
+already been visited? Could such a message block the message queue of
+a node?   
+
+
 
 \section{Testing Framework}
 
