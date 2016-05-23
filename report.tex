@@ -96,7 +96,9 @@ and a stack of nodes it has traveled through. The node the query
 passes through checks it's table to see if it know about the event, if
 it finds it it will send the query on its way to the event node. If it
 doesn't find it, it will send it to a random neighbor. If a query
-finds its target node it will get sent back to its original node the
+On the group chat, I felt pretty alone until the weekend before
+submission deadline while I tried to document and comment what I am
+currently working on.finds its target node it will get sent back to its original node the
 same way it got to the event so it can report about it.
 
 In our simulation a query will vanish if it can't find the event in 45
@@ -313,8 +315,70 @@ a node?
 
 \section{Testing Framework}
 
+Our aim was to have JUnit tests ready before programming but we ended
+up using the pseudocode as a base to produce our actual code in most
+cases, testing functionality while making the code. We have JUnit
+tests to make sure our constructors and methods work properly. We also
+have other ways of testing our program through exceptions and try and
+catch methods. Printouts of certain scenarios, smaller networks etc,
+were handy when recoignizing if the program ran as expected. 
+
+\begin{verbatim}
+Event is created id: 87 time: 370
+An agent is created
+Event is created id: 88 time: 372
+Event is created id: 89 time: 375
+An agent is created
+Event is created id: 90 time: 376
+An agent is created
+Event is created id: 91 time: 376
+Event is created id: 92 time: 376
+Event is created id: 93 time: 381
+An agent is created
+Event is created id: 94 time: 382
+An agent is created
+Event is created id: 95 time: 387
+Event is created id: 96 time: 396
+Query created searching for event id 33
+Query on search mode
+Query created searching for event id 21
+Query created searching for event id 77
+Event is created id: 97 time: 400
+An agent is created
+Query on search mode
+Query on track mode
+Query on search mode
+Query on track mode
+Query on track mode
+Event is created id: 98 time: 410
+An agent is created
+Event at x: 60 y 70, at time 333, id 77
+Query on way home
+An agent has reached zero in time to live
+Event at x: 60 y 130, at time 129, id 33
+Query on way home
+An agent has reached zero in time to live
+An agent has reached zero in time to live
+Event is created id: 99 time: 428
+An agent is created
+Event is created id: 100 time: 428
+Event is created id: 101 time: 429
+An agent is created
+Event is created id: 102 time: 434
+Event is created id: 103 time: 440
+\end{verbatim}
+
+In this is an example of the printout from timestep 370 to 440, we see
+agents and events getting created, an agent dieing, queries working as
+intended searching, tracking, finding event, reporting and finally
+going home.
+
 
 \section{Reflections and Account for Individual Contributions}
+Below follows a short account of each group member. All work was done
+on a public github repository which can be found here: 
+\url{https://github.com/lorenzgerber/rumour_routing}.
+
 \subsection{Johan Eklund}
 We had a pretty good idea what we wanted to do right from the first
 meeting. We made a solid UML diagram early on and we used it to make
@@ -359,8 +423,11 @@ implementation in this program are all the test classes which are
 built with junit tests and also added some exceptions.
 
 \subsection{Jakob Lundin}
+\textit{no text received}
 
 \subsection{Lorenz Gerber}
+I enjoyed this assignment and I think it helped to get a first
+impression of Java coding and object oriented software design.  
 
 \addcontentsline{toc}{section}{\refname}
 \bibliography{references}
