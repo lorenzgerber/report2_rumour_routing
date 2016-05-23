@@ -70,9 +70,9 @@ Lorenz Gerber ({\tt{dv15lgr@cs.umu.se}}, {\tt{lozger03@student.umu.se}})
 \section{Introduction}
 In predefined groups of students we were asked to create a simulation
 of a network consisting of a number of \textit{nodes} with a short
-communication range. The simulation consits of time steps, for every
-time step the network goes through the network and node and makes sure
-it does its job.
+communication range \cite{sensornetwork}. The simulation consits of
+time steps, for every time step the network goes through the network
+and node and makes sure it does its job.
 
 Using the \textit{rumour routing} algorithm \cite{braginsky2002} you
 start with a network of \textit{nodes}, in the  network there are
@@ -112,7 +112,7 @@ supposed to generate queries.
 
 \section{Compiling and Running of the Program}
 
-The program is writtne according to Java 1.7 and compiles on the
+The program is written according to Java 1.7 and compiles on the
 commandline with standard command \texttt{javac RumourRoutingApp.java}.
 Invoking the compiled program is done by calling \texttt{java
   ./RumourRoutingApp.class} from the command line.
@@ -129,7 +129,7 @@ Event at x: 130 y 210, at time 3848, id 977
 Experiment finished
 \end{verbatim}
 
-A number of parameters can be modfied in the
+A number of parameters can be modified in the
 \texttt{RumourRoutingApp.java} file. The meaning of these will be
 described in the section `Description of Program Structure'.
 \begin{verbatim}
@@ -162,59 +162,76 @@ directory with a web browser.
 The design of our rumour routing implementation from `OU3' assignment
 proofed to be mostly feasible for implementation. Certainly, some
 details that were left open in the design slightly changed other
-structures in the design, but mostly the presented code can be seen as
+structures, but mostly the presented code can be seen as
 an implementation of `OU3'. Hence below follows just a rather short
 account for the general design and we will focus more on practical
 implementation details.
 
 A general aim of object oriented design is to develop a model where
-real world entities have their counterparts modelled as clases/objects
+real world entities have their counterparts modelled as classes/objects
 with similar properties, behaviour and relations. For the current
-implementation, the real world entities of interest are the sensor
+implementation, the real world entities of interest are sensor
 \textit{nodes} with the capability to detect events and send/receive
 information. These three activities define two other abstract real
-world entities: \textit{events} and \textit{messages} that can be sent
-and received. Finally, as we are interested to investigate specific
+world entities: \textit{events} and \textit{messages}. The former are
+\textit{detected} and the latter can be \textit{sent} and \textit{received}. 
+Finally, as we are interested to investigate specific
 situations involving a large number of the above mentioned entities,
-we also consider the \textit{environment} as a required entity in our
+we also consider the \textit{environment} a required entity in our
 implementation. Hence, \textit{environment}, \textit{node},
-\textit{event} and \textit{message} were chosen as the base
-classes. To modell the behaviour described as \textit{rumour routing} algorithm,
-we designed specialications of the class \textit{message}:
+\textit{event} and \textit{message} were chosen as base
+classes. To modell the behaviour described as \textit{rumour routing}
+algorithm, we designed specialications of the class \textit{message}:
 \textit{agent} and \textit{query}.
 
 \section{Specific Design Decisions}
 \subsection{A generic Environment}
 To obtain a generic environment that allows positioning nodes in which
-ever way desired, a coordinate based system was implemeted. Then, to
+ever way desired, a coordinate based system was implemeted. To
 simplify the main loop, a data structure containing the
 neighbour nodes in send/receive range is generated prior to the actual
 experiment. During the experiment, no more distances need to be
-calculated, only the initialized node neighbour data structure can be accessed.
+calculated, only the initialized node neighbour data structure can be
+used.
 
 \subsection{Time managment}
-Time in our system is semi continuous and more like a turn/step based
-game system. In each time step, each node has at least once focus to
-do one activity. The activities that consume such a time slot at the
-node are sending and receiving a message while detecting an event and
-creating messages does not consume the time step.
+In our simulation, time is semi continuous, turn/step based. 
+In each time step, each node has at least once focus to
+do one activity. According to the assignment instruction, activities
+that consume such a time slot at the node are \textit{sending} and
+\textit{receiving} a message while \textit{detecting} an event and
+\textit{creating} messages does not consume a time step. 
 
 \subsubsection{Busy States}
-The steps that consume a time slot at the node, sending/receiving
+The steps that consume a time slot at the node (sending/receiving)
 always involve two nodes. Hence, two scenarios related to concurrency
 have to be handled: (1) A node wants to send a message and the
-receiver node has already used it's turn, (2) when the sequence comes
-to a node, he has already used his turn by receiving a message earlier
-in the same time step.
+receiver node has already used its turn for the current timestep, or,
+(2) when the activity sequence comes to a node, that has already used
+his turn by receiving a message earlier in the same time step.
 
 We defined a boolean \textit{busy state} property on the node class
 which is switched to \textit{true} after having used the current time
-step. After looping through all nodes in one time step for activities,
-a further loop for switching the \textit{busy state} back to
-\textit{false}.
+step. In the end of a time step, the busy state of all nodes is reset
+back to \textit{false}.
 
 \subsection{Events - copy or clone?}
+Event construction is initiated by the environment at individual
+nodes. The event object is first stored in a routing table at the
+node where it occured. In our implementation, event objects are
+carried around as piece of information within messages. They have a
+\textit{distance} property that indicates the distance in node jumps
+back to the node where the event occured.
+
+As event objects are carried around by messages, they have to update
+the distance property individually, hence, they need to be clones rather than
+just references pointing to the same event object. To recognize the
+equality of two events, the hashcode and equalTo methods were
+overridden to make use of the \textit{eventId} property instead of the
+object reference.
+
 \subsection{Managing the Routing Tables}
+
 \subsection{Where to go - nextNode mode}
 
 
