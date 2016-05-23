@@ -231,11 +231,35 @@ overridden to make use of the \textit{eventId} property instead of the
 object reference.
 
 \subsection{Managing the Routing Tables}
+Routing tables where implemented as HashMaps with the event as Key and
+the \textit{NodeId} as value. Routing tables are present both in \textit{nodes}
+and in \textit{agents}. Updating and managing the routing tables
+is the main action of agents. First both HashMaps are updated with
+events missing in one or the other and second, if an event is
+available at the node and at the agent, the one with the shorter
+distance to the event node is chosen.
+
+Currently, these operations are done in rather clumsy nested
+\textit{for loops}. The problem with the current code is that it involves
+accessing properties (distance to event node) of a specific key. This
+is not a normal supported operation of a HashMap, hence, it requires
+another \textit{for loop}. A improvement to this structure will be
+proposed later. 
+
 
 \subsection{Where to go - nextNode mode}
+Finding the next node to visit is implemented individually in 
+\textit{agent} and \textit{query}. The method in the \textit{query}
+class needs to handle three different cases, depending on the current
+status of the \textit{query}. The method of the \textit{search} mode
+is the same as the \textit{nextNode} method of the
+\textit{agent}. Both \textit{query} and \textit{agent} inherit from 
+their superclass \textit{message} a \textit{queue} that holds the most
+recent visited \textit{nodes}. In the practical implementation,
+instead of a \textit{queue}, the  datatype \textit{dequeue} was chosen
+which allows also to check the last element added.
 
-
-
+The \textit{nextNode} methods of \textit{query} for 
 
 Figure \ref{fig:uml} shows the UML diagram of the chosen design,
 automatically produced using IntelliJ.
@@ -280,7 +304,26 @@ classes. Wrote JUnit tests working with Tommie. Worked on the final
 report. Had some fierce battles with git.
 
 \subsection{Tommie Lindberg}
+We had a pretty good idea how we wanted to build the program from the
+start and a good pseudo code to follow. During the implementations did
+we discover some problems we may interrupt and had some differences how
+we wanted to avoid that. We discussed the possible solutions and
+decided the one that may work best. 
+The co-operation of this assignment could have worked better, we work
+in different ways but we tried to stay in contact with each other on a
+mobile group message application called Slack. We did also have a
+common github folder that we worked with. Some people of the group
+didn't work so much with the assignment and one did more of it. I
+guess this is what we are about to learn about working together with
+other people on an assignment. That people work in different ways and
+the key is to find a way that works for the co-operation of a project.
+I implemented the message class in the program, we then encountered
+some things we wanted to change about it, so we did. My main
+implementation in this program are all the test classes which are
+built with junit tests and also added some exceptions.
+
 \subsection{Jakob Lundin}
+
 \subsection{Lorenz Gerber}
 
 \addcontentsline{toc}{section}{\refname}
