@@ -27,7 +27,7 @@ Jakob Lundin ({\tt{c14jln@cs.umu.se}}) \\
 Lorenz Gerber ({\tt{dv15lgr@cs.umu.se}}, {\tt{lozger03@student.umu.se}})
 }
 \date{2016-05-23}
-%\revisiondate{2016-01-18}
+\revisiondate{2016-06-10}
 \instructor{Anders Broberg \\ Niklas Fries \\ Adam Dahlgren \\
   Jonathan Westin \\ Erik Moström \\ Alexander Sutherland}
 
@@ -185,6 +185,62 @@ implementation. Hence, \textit{environment}, \textit{node},
 classes. To modell the behaviour described as \textit{rumour routing}
 algorithm, we designed specialications of the class \textit{message}:
 \textit{agent} and \textit{query}.
+
+\subsection{Initialization of System}
+Using the variables to fit the specifications we construct an
+environment class. Iterate through every node, giving them each a
+position, such that they align as a grid. Four random nodes are made
+query origin nodes. Initialize neighbours for every node using the
+node range. Run experiment advancing time.
+
+\subsection{Query Movement Algorithm}
+Set time to live to 0.
+
+\subsubsection{Entering a node}
+If mode is set to \textit{search}. Then if the event is found in the
+current nodes list of events change mode to \textit{track}. If mode is
+set to \textit{track}. Then iterate through current nodes list of
+events. If a match for the target event is found. Then if the distance
+to the event is 0. Put a clone of the found event into the query. Save
+current nodes coordinates.  Change mode to \textit{homing}. If mode is
+set to \textit{homing}. Then if current nodes matches the original
+node. Remove the query from the resendable queries. Print the events
+destination nodes X and Y, time and ID. Reset time to live.
+
+\subsubsection{Choosing where to go next}
+If mode is set to \textit{search}. Iterate through current nodes list
+of neighbours.  When it finds a node that is not in the list of
+visited nodes. Then if that node is not busy. Put that node on the
+route stack. Return the destination node. If mode is set to
+\textit{track}. Iterate through current nodes list of events. If it
+finds its target event in the list. Iterate though current nodes
+list of neighbours. When it finds the matching node in the list.  If
+that node is not busy. Put that node on the route stack. Return the
+destination node. If mode is set to \textit{homing}. If the top of the
+stack is not a busy node. Return the top of the stack.
+
+\subsection{Agent Movement Algorithm}
+Clone the event and put into routing map
+\subsubsection{Entering a node}
+Iterate through the routing map. If current nodes eventlist contains
+an eventkey matching the agents eventkey. Iterate through the nodes
+eventslist. If the nodes event key matches the agents event key. Then
+if the the nodes event keys distance is greater than the
+agents. Update the nodes eventlist. If the current nodes eventlist
+does not contain a eventkey matching the agents eventkey. Update the
+nodes eventlist. Iterate through the nodes eventlist. If current
+agents routing map contains an eventkey matching an eventkey in the
+nodes eventlist.  Iterate through the agents routingmap.  If the
+agents event key matches the nodes event key. Then if the agents event
+keys distance is greater than the nodes. Update the agents
+routingmap. If current agents routing map does not contain an eventkey
+matching an eventkey in the nodes eventlist. Updte the agents
+routingmap. When sent update the routingmap event distance and node
+ID.
+
+\subsubsection{Choosing where to go next}
+Iterate through current nodes list of neighbours. When it finds a node
+not in the list of recent nodes. If that node is not busy, Return node.
 
 \section{Specific Design Decisions}
 \subsection{A generic Environment}
