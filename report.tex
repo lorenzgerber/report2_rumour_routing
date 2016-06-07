@@ -187,14 +187,14 @@ algorithm, we designed specialications of the class \textit{message}:
 \textit{agent} and \textit{query}.
 
 \subsection{Initialization of System}
-Using the variables to fit the specifications we construct an
+\noindent Using the variables to fit the specifications we construct an
 environment class. Iterate through every node, giving them each a
 position, such that they align as a grid. Four random nodes are made
 query origin nodes. Initialize neighbours for every node using the
 node range. Run experiment advancing time.
 
 \subsection{Query Movement Algorithm}
-Set time to live to 0.
+\noindent Set time to live to 0.
 
 \subsubsection{Entering a node}
 If mode is set to \textit{search}. Then if the event is found in the
@@ -220,7 +220,8 @@ destination node. If mode is set to \textit{homing}. If the top of the
 stack is not a busy node. Return the top of the stack.
 
 \subsection{Agent Movement Algorithm}
-Clone the event and put into routing map
+\noindent Clone the event and put into routing map
+
 \subsubsection{Entering a node}
 Iterate through the routing map. If current nodes eventlist contains
 an eventkey matching the agents eventkey. Iterate through the nodes
